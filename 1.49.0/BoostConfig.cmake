@@ -15,6 +15,8 @@ set(Boost_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include"
   CACHE FILEPATH "Boost include directory")
 if(EMSCRIPTEN)
   set(Boost_LIBRARY_DIRS "${CMAKE_CURRENT_LIST_DIR}/lib/emscripten")
+elseif(IOS)
+  set(Boost_LIBRARY_DIRS "${CMAKE_CURRENT_LIST_DIR}/lib/ios")
 elseif(APPLE)
   option(USE_LIBCPP "Use libc++ compiled libs instead of libstdc++ libs on OS X" OFF)
   if(USE_LIBCPP)
@@ -24,8 +26,6 @@ elseif(APPLE)
   endif()
 elseif(LINUX)
   set(Boost_LIBRARY_DIRS "${CMAKE_CURRENT_LIST_DIR}/lib/linux/lib")
-elseif(IOS)
-  set(Boost_LIBRARY_DIRS "${CMAKE_CURRENT_LIST_DIR}/lib/ios")
 endif()
 #
 #  Include the imported targets
