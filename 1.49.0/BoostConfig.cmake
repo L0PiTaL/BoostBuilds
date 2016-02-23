@@ -48,6 +48,7 @@ foreach(component ${Boost_DEFAULT_FIND_COMPONENTS})
   set_target_properties(boost_${component} PROPERTIES
     IMPORTED_LOCATION_RELEASE ${Boost_LIBRARY_${component}}
   )
+  mark_as_advanced(Boost_LIBRARY_${component})
 endforeach()
 
 set(Boost_LIBRARIES "")
