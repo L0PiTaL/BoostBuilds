@@ -33,28 +33,27 @@ endif()
 
 include("${Boost_LIBRARY_DIRS}/Boost.cmake")
 
-foreach(component ${Boost_DEFAULT_FIND_COMPONENTS})
+if (NOT Boost_FIND_COMPONENTS)
+  set(Boost_FIND_COMPONENTS ${Boost_DEFAULT_FIND_COMPONENTS})
+endif()
+
+foreach(component ${Boost_FIND_COMPONENTS})
   ADD_LIBRARY(boost_${component} STATIC IMPORTED)
 endforeach()
 
-foreach(component ${Boost_DEFAULT_FIND_COMPONENTS})
-  set_property(TARGET boost_${component}
-    APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
+foreach(component ${Boost_FIND_COMPONENTS})
   find_library(Boost_LIBRARY_${component}
     NAMES boost_${component}
     PATHS ${Boost_LIBRARY_DIRS}
     NO_DEFAULT_PATH
   )
   set_target_properties(boost_${component} PROPERTIES
-    IMPORTED_LOCATION_RELEASE ${Boost_LIBRARY_${component}}
+    IMPORTED_LOCATION ${Boost_LIBRARY_${component}}
   )
   mark_as_advanced(Boost_LIBRARY_${component})
 endforeach()
 
 set(Boost_LIBRARIES "")
-if (NOT Boost_FIND_COMPONENTS)
-  set(Boost_FIND_COMPONENTS ${Boost_DEFAULT_FIND_COMPONENTS})
-endif()
 
 foreach(component ${Boost_FIND_COMPONENTS})
   #
