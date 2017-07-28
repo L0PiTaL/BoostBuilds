@@ -42,19 +42,19 @@ if (NOT Boost_FIND_COMPONENTS)
 endif()
 
 foreach(component ${Boost_FIND_COMPONENTS})
-  ADD_LIBRARY(boost_${component} STATIC IMPORTED)
-endforeach()
+  if( NOT TARGET boost_${component} )
+    ADD_LIBRARY(boost_${component} STATIC IMPORTED)
 
-foreach(component ${Boost_FIND_COMPONENTS})
-  find_library(Boost_LIBRARY_${component}
-    NAMES boost_${component}
-    PATHS ${Boost_LIBRARY_DIRS}
-    NO_DEFAULT_PATH
-  )
-  set_target_properties(boost_${component} PROPERTIES
-    IMPORTED_LOCATION ${Boost_LIBRARY_${component}}
-  )
-  mark_as_advanced(Boost_LIBRARY_${component})
+    find_library(Boost_LIBRARY_${component}
+      NAMES boost_${component}
+      PATHS ${Boost_LIBRARY_DIRS}
+      NO_DEFAULT_PATH
+    )
+    set_target_properties(boost_${component} PROPERTIES
+      IMPORTED_LOCATION ${Boost_LIBRARY_${component}}
+    )
+    mark_as_advanced(Boost_LIBRARY_${component})
+  endif()
 endforeach()
 
 set(Boost_LIBRARIES "")
