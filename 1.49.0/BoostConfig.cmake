@@ -30,6 +30,10 @@ endif()
 #
 #  Include the imported targets
 #
+if( NOT EXISTS "${Boost_LIBRARY_DIRS}/Boost.cmake")
+    set(Boost_FOUND OFF)
+    return()
+endif()
 
 include("${Boost_LIBRARY_DIRS}/Boost.cmake")
 
