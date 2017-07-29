@@ -7,33 +7,38 @@
 #
 
 #
+# Determine where to look for the Boost.cmake
+#
+if(EMSCRIPTEN)
+  set(Boost_LIB_DIR "${CMAKE_CURRENT_LIST_DIR}/lib/emscripten")
+elseif(IOS)
+  set(Boost_LIB_DIR "${CMAKE_CURRENT_LIST_DIR}/lib/ios")
+elseif(APPLE)
+  option(USE_LIBCPP "Use libc++ compiled libs instead of libstdc++ libs on OS X" OFF)
+  if(USE_LIBCPP)
+    set(Boost_LIB_DIR "${CMAKE_CURRENT_LIST_DIR}/lib/macosx-libc++")
+  else()
+    set(Boost_LIB_DIR "${CMAKE_CURRENT_LIST_DIR}/lib/macosx")
+  endif()
+elseif(LINUX)
+  set(Boost_LIB_DIR "${CMAKE_CURRENT_LIST_DIR}/lib/linux/lib")
+endif()
+#
+#  Include the imported targets
+#
+if( NOT EXISTS "${Boost_LIB_DIR}/Boost.cmake")
+    set(Boost_FOUND OFF)
+    return()
+endif()
+
+#
 #  Various variables
 #
 set(Boost_VERSION "1.49.0")
 set(Boost_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/include")
 set(Boost_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include"
   CACHE FILEPATH "Boost include directory")
-if(EMSCRIPTEN)
-  set(Boost_LIBRARY_DIRS "${CMAKE_CURRENT_LIST_DIR}/lib/emscripten")
-elseif(IOS)
-  set(Boost_LIBRARY_DIRS "${CMAKE_CURRENT_LIST_DIR}/lib/ios")
-elseif(APPLE)
-  option(USE_LIBCPP "Use libc++ compiled libs instead of libstdc++ libs on OS X" OFF)
-  if(USE_LIBCPP)
-    set(Boost_LIBRARY_DIRS "${CMAKE_CURRENT_LIST_DIR}/lib/macosx-libc++")
-  else()
-    set(Boost_LIBRARY_DIRS "${CMAKE_CURRENT_LIST_DIR}/lib/macosx")
-  endif()
-elseif(LINUX)
-  set(Boost_LIBRARY_DIRS "${CMAKE_CURRENT_LIST_DIR}/lib/linux/lib")
-endif()
-#
-#  Include the imported targets
-#
-if( NOT EXISTS "${Boost_LIBRARY_DIRS}/Boost.cmake")
-    set(Boost_FOUND OFF)
-    return()
-endif()
+set(Boost_LIBRARY_DIRS "${Boost_LIB_DIR}")
 
 include("${Boost_LIBRARY_DIRS}/Boost.cmake")
 
