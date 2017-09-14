@@ -166,8 +166,10 @@ inline void thread_yield()
 
 inline void thread_sleep(unsigned int ms)
 {
-   const struct timespec rqt = { ms/1000u, (ms%1000u)*1000000u  };
-   ::nanosleep(&rqt, 0);
+    struct timespec rqt;
+    rqt.tv_sec = ms/1000u;
+    rqt.tv_nsec = (ms%1000u)*1000000u;
+    ::nanosleep(&rqt, 0);
 }
 
 //systemwide thread
