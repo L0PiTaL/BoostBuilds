@@ -47,6 +47,7 @@ if (NOT Boost_FIND_COMPONENTS)
 endif()
 
 foreach(component ${Boost_FIND_COMPONENTS})
+  set(Boost_${component}_FOUND ON)
   if( NOT TARGET boost_${component} )
     ADD_LIBRARY(boost_${component} STATIC IMPORTED)
 
